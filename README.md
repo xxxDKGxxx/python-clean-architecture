@@ -67,7 +67,8 @@ Response:
 {
     "id": 1,
     "firstname": "Jan",
-    "lastname": "Kowalski"
+    "lastname": "Kowalski",
+    "addresses": []
 }
 ```
 
