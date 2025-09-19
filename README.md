@@ -18,8 +18,8 @@ src/
 │ └── entity_configuration/
 ├── use_cases/ # Business logic / use cases
 │ └── user/create_user/
-│ ├── create_user_command.py
-│ └── create_user_use_case.py
+│   ├── create_user_command.py
+│   └── create_user_use_case.py
 ```
 
 ---
