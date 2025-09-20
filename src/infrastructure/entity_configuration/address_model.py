@@ -8,10 +8,27 @@ from src.infrastructure.entity_configuration.base import metadata, mapper_regist
 addresses_table = Table(
     "Addresses",
     metadata,
-    Column("id", Integer, primary_key=True),
-    Column("street", Text, nullable=False),
-    Column("city", Text, nullable=False),
-    Column("userid", Integer, ForeignKey("Users.id"), nullable=False)
+    Column(
+        "id",
+        Integer,
+        primary_key=True
+    ),
+    Column(
+        "street",
+        Text,
+        nullable=False
+    ),
+    Column(
+        "city",
+        Text,
+        nullable=False
+    ),
+    Column(
+        "userid",
+        Integer,
+        ForeignKey("Users.id"),
+        nullable=False
+    )
 )
 
 mapper_registry.map_imperatively(

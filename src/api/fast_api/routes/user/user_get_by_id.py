@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from src.api.dtos.user.get_user.get_user_response_dto import GetUserResponseDto, AddressDto
-from src.core.entities.user import User
+from src.api.fast_api.exception_converter import convert_to_http_exception
 from src.infrastructure.database import get_db
-from src.infrastructure.repositories.sql_alchemy_repository import SqlAlchemyRepository
+from src.infrastructure.repositories.sql_alchemy_user_repository import SqlAlchemyUserRepository
 from src.use_cases.user.get_user.get_user_query import GetUserQuery
 from src.use_cases.user.get_user.get_user_use_case import GetUserUseCase
 
@@ -17,17 +17,17 @@ def get_user_by_id(
 
     query = GetUserQuery(user_id)
 
-    repository = SqlAlchemyRepository[User](
-        session,
-        User
-    )
+    repository = SqlAlchemyUserRepository(session)
 
     handler = GetUserUseCase(
         repository,
         query
     )
 
-    user = handler.execute()
+    try:
+        user = handler.execute()
+    except Exception as e:
+        raise convert_to_http_exception(e)
 
     return GetUserResponseDto(
         id=user.id,

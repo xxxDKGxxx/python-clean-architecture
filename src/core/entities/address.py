@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import Optional
 
 from .base import EntityBase
@@ -12,7 +11,12 @@ class Address(EntityBase):
     userid: int
     user: Optional[User]
 
-    def __init__(self, street: str, city: str, userid: int):
+    def __init__(
+            self,
+            street: str,
+            city: str,
+            userid: int):
+
         self.street = street
         self.city = city
         self.userid = userid

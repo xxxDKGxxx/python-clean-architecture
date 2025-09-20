@@ -4,16 +4,18 @@ from sqlalchemy.orm import Session
 
 from src.api.dtos.address.create_address_request_dto import CreateAddressRequestDto
 from src.api.dtos.address.create_address_response_dto import CreateAddressResponseDto
-from src.core.entities.address import Address
-from src.core.entities.user import User
+from src.api.fast_api.exception_converter import convert_to_http_exception
 from src.infrastructure.database import get_db
-from src.infrastructure.repositories.sql_alchemy_repository import SqlAlchemyRepository
+from src.infrastructure.repositories.sql_alchemy_address_repository import SqlAlchemyAddressRepository
 from src.use_cases.address.create_address.create_address_command import CreateAddressCommand
 from src.use_cases.address.create_address.create_address_use_case import CreateAddressUseCase
 
 router = APIRouter(prefix="/addresses")
 
-@router.post("/")
+@router.post(
+    "/",
+    response_model=CreateAddressResponseDto
+)
 async def create_address(
         address: CreateAddressRequestDto,
         session: Session = Depends(get_db)):
@@ -24,14 +26,17 @@ async def create_address(
         address.userid
     )
 
-    addresses_repository = SqlAlchemyRepository[Address](session, Address)
+    addresses_repository = SqlAlchemyAddressRepository(session)
 
     handler = CreateAddressUseCase(
         addresses_repository,
         command
     )
 
-    new_address = handler.execute()
+    try:
+        new_address = handler.execute()
+    except Exception as e:
+        raise convert_to_http_exception(e)
 
     return CreateAddressResponseDto(
         id=new_address.id,

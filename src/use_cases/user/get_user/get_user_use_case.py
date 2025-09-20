@@ -1,8 +1,5 @@
-from urllib3 import request
-
-from src.core.entities.user import User
-from src.use_cases.exceptions import NotFoundError
-from src.use_cases.repository_base import Repository
+from src.core.repositories.user_repository import UserRepository
+from src.use_cases.exceptions.exceptions import NotFoundError
 from src.use_cases.use_case_base import UseCaseBase
 from src.use_cases.user.get_user.get_user_query import GetUserQuery
 
@@ -10,7 +7,7 @@ from src.use_cases.user.get_user.get_user_query import GetUserQuery
 class GetUserUseCase(UseCaseBase):
     def __init__(
             self,
-            users_repository: Repository[User],
+            users_repository: UserRepository,
             request: GetUserQuery
     ):
         self.users_repository = users_repository
